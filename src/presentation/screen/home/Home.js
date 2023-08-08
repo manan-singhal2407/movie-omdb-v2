@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import HomeRepositoryImpl from '../../../data/network/repositories/HomeRepositoryImpl.js';
+import HomeRepositoryImpl from '../../../data/repositories/HomeRepositoryImpl.js';
 import './Home.css';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
     const [moviesList, setMoviesList] = useState([]);
@@ -18,16 +19,16 @@ const Home = () => {
 
     const updatePaginationNumber = () => {
         const paginationUI = [];
-        for (let i=-2; i<=2; i++) {
+        for (let i = -2; i <= 2; i++) {
             if (i === 0) {
                 paginationUI.push(<span>{pageCount}</span>);
             } else if (i < 0) {
                 if (pageCount + i >= 1) {
-                    paginationUI.push(<a onClick={() => setPageCount(pageCount+i)}>{pageCount+i}</a>);
+                    paginationUI.push(<a onClick={() => setPageCount(pageCount + i)}>{pageCount + i}</a>);
                 }
             } else {
                 if (pageCount + i <= 100 && moviesList.length === 10) {
-                    paginationUI.push(<a onClick={() => setPageCount(pageCount+i)}>{pageCount+i}</a>);
+                    paginationUI.push(<a onClick={() => setPageCount(pageCount + i)}>{pageCount + i}</a>);
                 }
             }
         }
@@ -37,6 +38,7 @@ const Home = () => {
     const fetchMoviesWithTextAndPage = async () => {
         const homeRepository = new HomeRepositoryImpl();
         const movies = await homeRepository.fetchMoviesByTextAndPage(searchText === '' ? 'Harry' : searchText, pageCount, filterYear === '' ? null : filterYear);
+        console.log(movies[0].imdbID);
         setMoviesList(movies);
     };
 
@@ -59,6 +61,9 @@ const Home = () => {
     return (
         <div className='page_container'>
             <div className='nav_container'>
+                <Link to={'/likes'}>
+                    <button>Likes</button>
+                </Link>
                 <select value={filterYear} onChange={(e) => { setFilterYear(e.target.value); fetchMoviesWithTextAndPage(); }}>
                     <option value={''}>Year</option>
                     {generateYearOptions()}
@@ -71,10 +76,10 @@ const Home = () => {
             <ul className='movie_grid_container'>
                 {moviesList.map((movie) => (
                     <li className='movie_grid_card_container'>
-                        <a role='presentation'>
+                        <Link to={`/movieDetail/${movie.imdbID}`}>
                             <img src={movie.Poster} alt='' />
                             <h3>{movie.Title}</h3>
-                        </a>
+                        </Link>
                     </li>
                 ))}
             </ul>

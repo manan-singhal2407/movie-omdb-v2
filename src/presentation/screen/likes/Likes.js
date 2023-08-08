@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import HomeRepositoryImpl from '../../../data/network/repositories/HomeRepositoryImpl.js';
+import HomeRepositoryImpl from '../../../data/repositories/HomeRepositoryImpl.js';
 
 const Likes = () => {
     const [moviesList, setMoviesList] = useState([]);

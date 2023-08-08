@@ -1,4 +1,4 @@
-import HomeRepository from '../../../domain/repositories/HomeRepository.js';
+import HomeRepository from '../../domain/repositories/HomeRepository.js';
 import Movie from '../model/Movie.js';
 
 export default class HomeRepositoryImpl extends HomeRepository {
